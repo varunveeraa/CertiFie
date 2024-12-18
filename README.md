@@ -1,28 +1,27 @@
-# Blockchain-Based Certificate Manager - Prototype 1
+# Blockchain Certificate Manager - Prototype 2
 
-This project is a **Blockchain-powered Certificate Management System** where:
-1. **Issuers** can issue certificates by uploading a PDF file. The application hashes the file (excluding metadata) and stores the hash securely on the blockchain.
-2. **Verifiers** can verify certificates by uploading the same PDF file to check if the hash exists on the blockchain.
-
-This implementation uses **React.js** for the frontend, **Web3.js** for blockchain interactions, and a smart contract deployed on the **Sepolia Ethereum Testnet**.
+## Overview
+The Blockchain Certificate Manager is a decentralized application (dApp) designed to securely issue, revoke, and verify certificates on the blockchain. It leverages a **Contract Factory Architecture**, allowing issuers to have their own individual smart contracts while ensuring platform credibility through admin verification.
 
 ---
 
-## **Features**
+## Features
+### Admin
+- **Verify Issuers**: Approve issuers after reviewing their details.
+- **View Verified Issuers**: List of all verified issuers and their contract addresses.
 
-- **Certificate Issuance**:
-   - Issuers upload a PDF file.
-   - The file is hashed (metadata stripped) using SHA-256.
-   - The hash is stored on the blockchain using a smart contract.
+### Issuer
+- **Sign-Up as Issuer**: Register with organization details.
+- **Issue Certificates**: Upload certificates and store their hash securely on the blockchain.
+- **Revoke Certificates**: Remove issued certificates from the ledger.
+- **View Issued Certificates**: Display a list of all issued certificate hashes.
 
-- **Certificate Verification**:
-   - Verifiers upload a PDF file.
-   - The file is hashed and compared against hashes stored on the blockchain.
-   - The result shows whether the certificate is **valid** or **invalid**.
-
-- **User Experience**:
-   - Loading indicators when interacting with the blockchain.
-   - Success and error messages for feedback.
+### General
+- **Smart Contract Architecture**:
+  - Contract Factory for creating individual issuer contracts.
+  - Decentralized certificate issuance and verification.
+- **Blockchain Security**: Immutable records ensure trust and transparency.
+- **Wallet Integration**: Uses MetaMask for authentication and blockchain transactions.
 
 ---
 
