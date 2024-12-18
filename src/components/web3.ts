@@ -16,8 +16,8 @@ if (window.ethereum) {
   throw new Error("Metamask not found");
 }
 
-const contractAddress = '0x6e7f922cBFDa91260a94e77A87Ee6a5584790cD3';
-const contractABI =[
+const contractAddress = '0x23B8109e3B6E054c5b53c32295B91e108958AA1E';
+const contractABI = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -234,6 +234,17 @@ const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 const issuerContractABI = [
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_issuer",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -263,43 +274,6 @@ const issuerContractABI = [
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "certHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "issueCertificate",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "certHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "revokeCertificate",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_issuer",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
 				"name": "",
 				"type": "bytes32"
 			}
@@ -317,6 +291,51 @@ const issuerContractABI = [
 	},
 	{
 		"inputs": [],
+		"name": "getAllCertificates",
+		"outputs": [
+			{
+				"internalType": "bytes32[]",
+				"name": "",
+				"type": "bytes32[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "certHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "issueCertificate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "issuedCertificateHashes",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "issuer",
 		"outputs": [
 			{
@@ -326,6 +345,19 @@ const issuerContractABI = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "certHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "revokeCertificate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

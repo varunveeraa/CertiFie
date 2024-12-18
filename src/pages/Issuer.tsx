@@ -62,16 +62,20 @@ export function Issuer() {
   // Fetch all issued certificates
   const fetchIssuedCertificates = async (contractInstance: Contract<typeof issuerContractABI>) => {
     try {
-      // Explicitly typecast the result to an array of strings
       const certHashes = (await contractInstance.methods.getAllCertificates().call()) as string[];
-  
-      setIssuedCertificates(certHashes); // This now works because certHashes is a string[]
+      const filteredHashes = await Promise.all(
+        certHashes.map(async (hash) => {
+          const isRevoked = await contractInstance.methods.revokedCertificates(hash).call();
+          return isRevoked ? null : hash;
+        })
+      );
+      setIssuedCertificates(filteredHashes.filter(Boolean) as string[]);
     } catch (error) {
       console.error('Error fetching issued certificates:', error);
-      setIssuedCertificates([]); // Fallback to an empty array
+      setIssuedCertificates([]);
     }
   };
-  
+
   // Sign up as a new issuer
   const signUpIssuer = async () => {
     if (!wallet) return alert('Please connect your wallet first.');
@@ -118,6 +122,23 @@ export function Issuer() {
       await fetchIssuedCertificates(issuerContract); // Refresh certificates
     } catch (error) {
       console.error('Error issuing certificate:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Revoke a certificate
+  const revokeCertificate = async (hash: string) => {
+    if (!wallet || !issuerContract) return alert('Missing wallet or contract to revoke certificate.');
+
+    try {
+      setLoading(true);
+      await issuerContract.methods.revokeCertificate(hash).send({ from: wallet });
+      alert('Certificate revoked successfully!');
+      await fetchIssuedCertificates(issuerContract); // Refresh certificates
+    } catch (error) {
+      console.error('Error revoking certificate:', error);
+      alert('Failed to revoke certificate.');
     } finally {
       setLoading(false);
     }
@@ -201,15 +222,26 @@ export function Issuer() {
           <h2 className="text-xl font-semibold mb-4">Issued Certificates</h2>
           <ul className="space-y-2">
             {issuedCertificates.map((hash, index) => (
-              <li key={index} className="p-2 bg-gray-100 rounded flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gray-600" />
-                <span>{hash}</span>
+              <li
+                key={index}
+                className="p-2 bg-gray-100 rounded flex items-center gap-4 justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-gray-600" />
+                  <span>{hash}</span>
+                </div>
+                <Button
+                  onClick={() => revokeCertificate(hash)}
+                  variant="destructive"
+                  disabled={loading}
+                >
+                  {loading ? 'Revoking...' : 'Revoke'}
+                </Button>
               </li>
             ))}
           </ul>
         </section>
       )}
-
     </div>
   );
 }
