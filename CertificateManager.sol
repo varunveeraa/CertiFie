@@ -22,16 +22,20 @@ contract CertificateFactory {
         admin = msg.sender;
     }
 
+    // Modifier to check if caller is admin
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
         _;
     }
 
+    // Function for issuers to sign up
     function signUpIssuer(string memory _organizationName, string memory _organizationData) external {
         require(issuers[msg.sender].issuerAddress == address(0), "Issuer already signed up");
 
+        // Deploy a new IssuerContract for the signer
         IssuerContract newContract = new IssuerContract(msg.sender);
 
+        // Register the issuer
         issuers[msg.sender] = Issuer({
             issuerAddress: msg.sender,
             organizationName: _organizationName,
@@ -45,6 +49,7 @@ contract CertificateFactory {
         emit IssuerSignedUp(msg.sender, _organizationName, address(newContract));
     }
 
+    // Admin function to verify an issuer
     function verifyIssuer(address _issuerAddress) external onlyAdmin {
         require(issuers[_issuerAddress].issuerAddress != address(0), "Issuer not found");
         issuers[_issuerAddress].isVerified = true;
@@ -52,6 +57,7 @@ contract CertificateFactory {
         emit IssuerVerified(_issuerAddress, true);
     }
 
+    // View function to get all issuers
     function getAllIssuers() external view returns (Issuer[] memory) {
         Issuer[] memory result = new Issuer[](allIssuers.length);
         for (uint i = 0; i < allIssuers.length; i++) {
@@ -60,7 +66,6 @@ contract CertificateFactory {
         return result;
     }
 
-    // New getter to fetch the IssuerContract address
     function getIssuerContract(address _issuer) external view returns (address) {
         return issuers[_issuer].contractAddress;
     }
@@ -71,6 +76,7 @@ contract IssuerContract {
 
     mapping(bytes32 => bool) public certificates;
     mapping(bytes32 => bool) public revokedCertificates;
+    bytes32[] public issuedCertificateHashes; // New array to store issued certificates
 
     event CertificateIssued(bytes32 indexed certHash);
     event CertificateRevoked(bytes32 indexed certHash);
@@ -84,6 +90,7 @@ contract IssuerContract {
         require(!certificates[certHash], "Certificate already exists");
 
         certificates[certHash] = true;
+        issuedCertificateHashes.push(certHash); // Add the certificate hash to the list
         emit CertificateIssued(certHash);
     }
 
@@ -103,5 +110,9 @@ contract IssuerContract {
         } else {
             return "Valid";
         }
+    }
+
+    function getAllCertificates() external view returns (bytes32[] memory) {
+        return issuedCertificateHashes; // Return all issued certificates
     }
 }
