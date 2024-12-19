@@ -74,45 +74,58 @@ contract CertificateFactory {
 contract IssuerContract {
     address public issuer;
 
-    mapping(bytes32 => bool) public certificates;
-    mapping(bytes32 => bool) public revokedCertificates;
-    bytes32[] public issuedCertificateHashes; // New array to store issued certificates
+    struct Certificate {
+        string cid; // Content Identifier for the certificate stored in Web3 storage
+        bool isRevoked;
+    }
 
-    event CertificateIssued(bytes32 indexed certHash);
+    mapping(bytes32 => Certificate) public certificates;
+    bytes32[] public issuedCertificateHashes;
+
+    event CertificateIssued(bytes32 indexed certHash, string cid);
     event CertificateRevoked(bytes32 indexed certHash);
 
     constructor(address _issuer) {
         issuer = _issuer;
     }
 
-    function issueCertificate(bytes32 certHash) external {
+    function issueCertificate(bytes32 certHash, string memory cid) external {
         require(msg.sender == issuer, "Not authorized to issue certificates");
-        require(!certificates[certHash], "Certificate already exists");
+        require(bytes(certificates[certHash].cid).length == 0, "Certificate already exists");
 
-        certificates[certHash] = true;
-        issuedCertificateHashes.push(certHash); // Add the certificate hash to the list
-        emit CertificateIssued(certHash);
+        certificates[certHash] = Certificate({
+            cid: cid,
+            isRevoked: false
+        });
+        issuedCertificateHashes.push(certHash);
+
+        emit CertificateIssued(certHash, cid);
     }
 
     function revokeCertificate(bytes32 certHash) external {
         require(msg.sender == issuer, "Not authorized to revoke certificates");
-        require(certificates[certHash], "Certificate does not exist");
+        require(bytes(certificates[certHash].cid).length != 0, "Certificate does not exist");
 
-        revokedCertificates[certHash] = true;
+        certificates[certHash].isRevoked = true;
         emit CertificateRevoked(certHash);
     }
 
-    function verifyCertificate(bytes32 certHash) external view returns (string memory) {
-        if (!certificates[certHash]) {
-            return "Invalid";
-        } else if (revokedCertificates[certHash]) {
-            return "Revoked";
+    function verifyCertificate(bytes32 certHash) external view returns (string memory status, string memory cid) {
+        if (bytes(certificates[certHash].cid).length == 0) {
+            return ("Invalid", "");
+        } else if (certificates[certHash].isRevoked) {
+            return ("Revoked", "");
         } else {
-            return "Valid";
+            return ("Valid", certificates[certHash].cid);
         }
     }
 
     function getAllCertificates() external view returns (bytes32[] memory) {
-        return issuedCertificateHashes; // Return all issued certificates
+        return issuedCertificateHashes;
+    }
+
+    function getCertificateCID(bytes32 certHash) external view returns (string memory) {
+        require(bytes(certificates[certHash].cid).length > 0, "Certificate does not exist");
+        return certificates[certHash].cid;
     }
 }
