@@ -16,7 +16,7 @@ if (window.ethereum) {
   throw new Error("Metamask not found");
 }
 
-const contractAddress = '0x23B8109e3B6E054c5b53c32295B91e108958AA1E';
+const contractAddress = '0x79b1272E80af87eCfEB45C5A0f5152452d3039Be';
 const contractABI = [
 	{
 		"inputs": [],
@@ -252,6 +252,12 @@ const issuerContractABI = [
 				"internalType": "bytes32",
 				"name": "certHash",
 				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "cid",
+				"type": "string"
 			}
 		],
 		"name": "CertificateIssued",
@@ -281,8 +287,13 @@ const issuerContractABI = [
 		"name": "certificates",
 		"outputs": [
 			{
+				"internalType": "string",
+				"name": "cid",
+				"type": "string"
+			},
+			{
 				"internalType": "bool",
-				"name": "",
+				"name": "isRevoked",
 				"type": "bool"
 			}
 		],
@@ -308,6 +319,30 @@ const issuerContractABI = [
 				"internalType": "bytes32",
 				"name": "certHash",
 				"type": "bytes32"
+			}
+		],
+		"name": "getCertificateCID",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "certHash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "cid",
+				"type": "string"
 			}
 		],
 		"name": "issueCertificate",
@@ -364,25 +399,6 @@ const issuerContractABI = [
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "revokedCertificates",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
 				"name": "certHash",
 				"type": "bytes32"
 			}
@@ -391,7 +407,12 @@ const issuerContractABI = [
 		"outputs": [
 			{
 				"internalType": "string",
-				"name": "",
+				"name": "status",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "cid",
 				"type": "string"
 			}
 		],
