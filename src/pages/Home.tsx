@@ -18,8 +18,7 @@ export function Home() {
           CertiFie
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Revolutionizing trust with blockchain technology. Issue, verify, and manage certificates with
-          authenticity and transparency.
+          Revolutionizing trust with blockchain technology. Issue, verify, and manage certificates with authenticity and transparency.
         </p>
         <Button
           className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg font-bold rounded-full shadow-lg hover:scale-105 transform transition"
@@ -57,21 +56,26 @@ export function Home() {
       <section className="relative bg-blue-50 py-16 text-center rounded-t-2xl">
         <div className="max-w-5xl mx-auto space-y-8">
           <h2 className="text-3xl font-bold text-gray-900">Why CertiFie?</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             <FeatureCard
               icon={<span className="text-blue-400 text-3xl font-extrabold">#1</span>}
-              title="Decentralized Trust"
-              description="CertiFie leverages blockchain to provide a trustless system that ensures data integrity and security."
-            />
-            <FeatureCard
-              icon={<span className="text-pink-400 text-3xl font-extrabold">🚀</span>}
-              title="Instant Verification"
-              description="With a few clicks, verify authenticity globally in real time."
+              title="Built on Web3"
+              description="CertiFie leverages blockchain to ensure secure, tamper-proof certificates for all users."
             />
             <FeatureCard
               icon={<span className="text-green-400 text-3xl font-extrabold">🌐</span>}
-              title="Global Reach"
-              description="Whether you're in New York or Nairobi, CertiFie offers a unified platform to issue and verify certificates."
+              title="Stored on Decentralized Networks"
+              description="CertiFie uses cutting-edge decentralized technologies to store all certificates securely."
+            />
+            <FeatureCard
+              icon={<span className="text-purple-400 text-3xl font-extrabold">⚡</span>}
+              title="Hosted on Decentralized Networks"
+              description="CertiFie provides unmatched reliability by hosting on a decentralized infrastructure."
+            />
+            <FeatureCard
+              icon={<span className="text-yellow-400 text-3xl font-extrabold">🚀</span>}
+              title="Instant Verification"
+              description="With a few clicks, verify authenticity globally in real time."
             />
           </div>
         </div>
