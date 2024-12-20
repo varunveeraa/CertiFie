@@ -1,37 +1,55 @@
-# Blockchain Certificate Manager - Prototype 2
+# CertiFie - Blockchain Certificate Management
 
-## Overview
-The Blockchain Certificate Manager is a decentralized application (dApp) designed to securely issue, revoke, and verify certificates on the blockchain. It leverages a **Contract Factory Architecture**, allowing issuers to have their own individual smart contracts while ensuring platform credibility through admin verification.
-
----
-
-## Features
-### Admin
-- **Verify Issuers**: Approve issuers after reviewing their details.
-- **View Verified Issuers**: List of all verified issuers and their contract addresses.
-
-### Issuer
-- **Sign-Up as Issuer**: Register with organization details.
-- **Issue Certificates**: Upload certificates and store their hash securely on the blockchain.
-- **Revoke Certificates**: Remove issued certificates from the ledger.
-- **View Issued Certificates**: Display a list of all issued certificate hashes.
-
-### General
-- **Smart Contract Architecture**:
-  - Contract Factory for creating individual issuer contracts.
-  - Decentralized certificate issuance and verification.
-- **Blockchain Security**: Immutable records ensure trust and transparency.
-- **Wallet Integration**: Uses MetaMask for authentication and blockchain transactions.
+CertiFie is a decentralized web application designed to issue, verify, and manage certificates using blockchain technology. Built with Solidity, React, and IPFS, CertiFie ensures transparency, security, and immutability for certificate management.
 
 ---
 
-## **Tech Stack**
+## 🌟 **Features**
 
-- **Frontend**: React.js + TypeScript
-- **Blockchain**: Solidity Smart Contract on Sepolia Testnet
-- **Wallet Integration**: Metamask
-- **Libraries**:
-   - `web3.js`: Blockchain interaction
-   - `pdf-lib`: Strips metadata from PDF files
-   - `lucide-react`: Icons for UI feedback
-   - SHA-256 hashing using the Web Crypto API
+### For Admins:
+- **Issuer Management**: Admins can verify new issuers, ensuring a secure and trusted ecosystem.
+- **Certificate Insights**: View all certificates issued by verified issuers.
+- **Revocation Oversight**: Monitor revoked certificates and maintain platform integrity.
+
+### For Issuers:
+- **Decentralized Issuance**: Issue certificates stored securely on IPFS and validated on the Ethereum blockchain.
+- **Revocation**: Revoke certificates with ease and maintain a transparent revocation history.
+- **Certificate Management**: View all issued and revoked certificates.
+
+### For Verifiers:
+- **Instant Verification**: Verify certificate authenticity by hash or file upload.
+- **Certificate Access**: Download, print, or share verified certificates.
+- **Transparency**: Know the issuer's verification status and certificate issuance details.
+
+---
+
+## 💡 **Technical Architecture**
+
+### Issuance Workflow:
+1. **Document Upload**: The certificate is uploaded and stored on a decentralized storage network (IPFS).
+2. **Hash Generation**: A unique hash of the document is created for integrity verification.
+3. **Blockchain Storage**: The document hash and IPFS pointer are stored on the Ethereum blockchain.
+4. **Duplicate Prevention**: The hash ensures that duplicate certificates cannot be issued.
+
+### Verification Workflow:
+1. **Hash Verification**: The uploaded certificate or provided hash is checked against the blockchain.
+2. **Status Check**: The blockchain confirms whether the certificate is valid, revoked, or invalid.
+3. **Certificate Retrieval**: The document is retrieved from IPFS for review, download, or sharing.
+
+---
+
+## 🛠 **Technologies Used**
+
+- **Blockchain**: Solidity, Ethereum (Sepolia Testnet)
+- **Frontend**: React, Tailwind CSS
+- **Storage**: IPFS (via Pinata)
+- **Smart Contract Interaction**: Web3.js
+- **Hosting**: Fleek (IPFS-based decentralized hosting)
+
+---
+
+## 🔮 **Future Expansion**
+
+- **Batch Issuance**: Introduce Merkle Tree-based batch certificate issuance to enhance scalability.
+- **API Endpoints**: Provide APIs for enterprise and institutional integration.
+- **Advanced Verification**: QR-based verification for seamless access to certificate details.
